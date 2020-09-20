@@ -5,14 +5,6 @@ import tensorflow as tf
 import libs.config as cfg
 FLAGS = tf.app.flags.FLAGS
 slim = tf.contrib.slim
-if FLAGS.is_resize:
-    input_s = FLAGS.resize_height
-else:    
-    input_s = FLAGS.img_height
-
-
-
-out_c = 3
 
 def lenet(images, num_classes=10, is_training=False,
           dropout_keep_prob=0.5,
@@ -64,10 +56,6 @@ def lenet(images, num_classes=10, is_training=False,
         net, num_classes, activation_fn=None, scope='fc4')
   end_points['Predictions'] = prediction_fn(logits, scope='Predictions')
   return logits, end_points
-
-
-
-
 
 def lenet0(images, num_classes=10, is_training=False,
           dropout_keep_prob=0.5,
@@ -121,7 +109,6 @@ def lenet0(images, num_classes=10, is_training=False,
   return logits, end_points
 
 lenet.default_image_size = 28
-
 
 def dlenet(images, num_classes=10, is_training=False,
           dropout_keep_prob=0.5,
@@ -188,20 +175,3 @@ def dlenet(images, num_classes=10, is_training=False,
   end_points['Predictions'] = prediction_fn(logits, scope='Predictions')
 
   return logits, end_points
-
-
-
-
-def lenet_arg_scope(weight_decay=0.0):
-  """Defines the default lenet argument scope.
-  Args:
-    weight_decay: The weight decay to use for regularizing the model.
-  Returns:
-    An `arg_scope` to use for the inception v3 model.
-  """
-  with slim.arg_scope(
-      [slim.conv2d, slim.fully_connected],
-      weights_regularizer=slim.l2_regularizer(weight_decay),
-      weights_initializer=tf.truncated_normal_initializer(stddev=0.1),
-      activation_fn=tf.nn.relu) as sc:
-      return sc

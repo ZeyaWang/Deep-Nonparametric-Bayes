@@ -4,15 +4,8 @@ from __future__ import print_function
 import functools
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-from tensorflow.contrib import layers
-from tensorflow.contrib.layers.python.layers import layers as layers_lib
-from tensorflow.python.ops import array_ops
-import numpy as np
-
 import libs.config as cfg
-from libs.nets.lenet import lenet, dlenet, lenet0, decoder_lenet, decoder_dlenet, decoder_lenet0
-from libs.nets import densenet
-
+from libs.nets.lenet import lenet, dlenet, lenet0
 
 FLAGS = tf.app.flags.FLAGS
 
