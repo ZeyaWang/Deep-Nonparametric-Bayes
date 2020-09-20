@@ -1,5 +1,4 @@
-# Deep Nonparametric Bayes (DNB): A Joint Learning Framework for Deep
-Bayesian Nonparametric Clustering
+# Deep Nonparametric Bayes (DNB): A Joint Learning Framework for Deep Bayesian Nonparametric Clustering
 
 
 ## Overview
