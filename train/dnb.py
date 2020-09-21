@@ -235,7 +235,6 @@ def train():
                     val_embed_x = sess.run(val_end_data, feed_dict={imageip:val_data[start:end]})
                     val_embed.append(val_embed_x)  
             elif FLAGS.dataset == 'usps': # 11000
-                print(FLAGS.dataset)
                 for s in range(11):
                     start = s*1000
                     end = (s+1)*1000
@@ -281,7 +280,6 @@ def train():
                     uln = np.sum(val_labels==ul) #Nk
                     ulxtx = np.matmul(ulx.T, ulx) #p x p
                     ulxx = np.sum(ulx, axis=0) # p
-                    print(ulxx.shape,uln,ulxtx.shape)
                     uln_l.append(uln)
                     ulxtx_l.append(ulxtx)
                     ulxx_l.append(ulxx) 
@@ -337,9 +335,10 @@ def train():
                         saver.save(sess, os.path.join(outdir, real_period)
                         # save truth and labels
                         np.savez(os.path.join(outdir,'labels_{}.npy'.format(real_period)), 
-                            val_labels=val_labels, val_truth=val_truth)
+                            val_labels=val_labels, val_truth=val_truth,
+                            val_mean=val_mean, val_std=val_std)
                         # save dpm model
-                        with open(os.path.join(outdir, 'model_{}'.format(real_period), 'wb') as pf:
+                        with open(os.path.join(outdir, 'model_{}'.format(real_period), 'wb')) as pf:
                             pickle.dump(dpgmm, pf)
 
             if period < FLAGS.max_periods - 1:
@@ -361,8 +360,8 @@ def train():
                     period_cluster_loss += dlossv/batch_num
                     period_det_loss += dtlossv/batch_num
                     summary_writer.add_summary(merged_summary, real_step)
-                    print('DP loss for back step {} is {}; det loss is{}, total loss is{}'.format(real_step, 
-                        dlossv, dtlossv, dlossv + Detcoef*dtlossv))
+                    #print('DP loss for back step {} is {}; det loss is{}, total loss is{}'.format(real_step, 
+                    #    dlossv, dtlossv, dlossv + Detcoef*dtlossv))
                 ## shuffle train data for next batch
                 train_datum.shuffle(period)
                 val_data, val_truth  = np.copy(train_datum.data), np.copy(train_datum.label)
