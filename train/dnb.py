@@ -87,29 +87,27 @@ def restore(sess, opt=0):
 def train():
     ## set the parameters for different datasets
     if FLAGS.dataset == 'mnist_test': 
-        img_height = img_width = 28
+        FLAGS.img_height = FLAGS.img_width = 28
         learning_rate = 0.001
         Detcoef = 50
     elif FLAGS.dataset == 'usps': 
-        img_height = img_width = 32      
+        FLAGS.img_height = FLAGS.img_width = 32      
         learning_rate = 0.0001  
         Detcoef = 50
     elif FLAGS.dataset == 'frgc': 
-        img_height = img_width = 32
+        FLAGS.img_height = FLAGS.img_width = 32
         learning_rate = 0.1 
         Detcoef = 20   
     elif FLAGS.dataset == 'ytf': 
-        img_height = img_width = 55
+        FLAGS.img_height = FLAGS.img_width = 55
         learning_rate = 0.1
         Detcoef = 20
     elif FLAGS.dataset == 'umist': 
-        img_height = 112
-        img_width = 92
+        FLAGS.img_height = 112
+        FLAGS.img_width = 92
         learning_rate = 0.0001
         Detcoef = 20
     else:
-        img_height = FLAGS.img_height
-        img_width = FLAGS.img_width
         learning_rate = FLAGS.learning_rate
         Detcoef = FLAGS.Detcoef
 
@@ -119,7 +117,7 @@ def train():
         if FLAGS.is_resize:
             imageip = tf.placeholder(tf.float32, [None, FLAGS.resize_height, FLAGS.resize_width, 3])
         else:    
-            imageip = tf.placeholder(tf.float32, [None, img_height, img_width, 3])
+            imageip = tf.placeholder(tf.float32, [None, FLAGS.img_height, FLAGS.img_width, 3])
 
         # get the embedding data from the network
         _, end_points =network.get_network(FLAGS.network, imageip, FLAGS.max_k,
