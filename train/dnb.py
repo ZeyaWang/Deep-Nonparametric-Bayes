@@ -341,7 +341,7 @@ def train():
                         with open(os.path.join(outdir, 'model_{}'.format(real_period), 'wb')) as pf:
                             pickle.dump(dpgmm, pf)
 
-            if period < FLAGS.max_periods - 1:
+            if period < max_periods - 1:
                 ''' Backward steps'''
                 # require: train_labels_onehot:NxK; dp_mus: KxD; dp_Gammas: DxDxK
                 train_datum.reset() # reset data from the original order to match predicted label
