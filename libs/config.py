@@ -46,13 +46,13 @@ tf.app.flags.DEFINE_float(
     'Detcoef', 20.,
     'balance parameter for repulsion')
 tf.app.flags.DEFINE_integer(
-    'max_periods', 250,
+    'max_periods', 500,
     'max periods')
 tf.app.flags.DEFINE_integer(
     'normalize', 0,
     'normalization methods')
 tf.app.flags.DEFINE_float(
-    'weight_decay', 0.005, 
+    'weight_decay', 0.0001, 
     'weight decay on the model weights.')
 tf.app.flags.DEFINE_float(
     'momentum', 0.9,

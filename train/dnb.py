@@ -85,13 +85,35 @@ def restore(sess, opt=0):
     restorer.restore(sess, checkpoint_path)
 
 def train():
+    ## set the parameters for different datasets
+    if FLAGS.dataset == 'mnist_test': 
+        img_height = img_width = 28
+        learning_rate = 0.001
+    elif FLAGS.dataset == 'usps': 
+        img_height = img_width = 32      
+        learning_rate = 0.0001  
+    elif FLAGS.dataset == 'frgc': 
+        img_height = img_width = 32
+        learning_rate = 0.1    
+    elif FLAGS.dataset == 'ytf': 
+        img_height = img_width = 55
+        learning_rate = 0.1
+    elif FLAGS.dataset == 'umist': 
+        img_height = 112
+        img_width = 92
+        learning_rate = 0.0001
+    else:
+        img_height = FLAGS.img_height
+        img_width = FLAGS.img_width
+        learning_rate = FLAGS.learning_rate
+
     tf.logging.set_verbosity(tf.logging.DEBUG)
     with tf.Graph().as_default():
         # tensor for input images
         if FLAGS.is_resize:
             imageip = tf.placeholder(tf.float32, [None, FLAGS.resize_height, FLAGS.resize_width, 3])
         else:    
-            imageip = tf.placeholder(tf.float32, [None, FLAGS.img_height, FLAGS.img_width, 3])
+            imageip = tf.placeholder(tf.float32, [None, img_height, img_width, 3])
 
         # get the embedding data from the network
         _, end_points =network.get_network(FLAGS.network, imageip, FLAGS.max_k,
@@ -134,8 +156,13 @@ def train():
         global_step = slim.create_global_step()
 
         ## load the data
-        with open('{}/{}.p'.format(FLAGS.dataset_dir, FLAGS.dataset), 'rb') as pf:
-            train_datum = pickle.load(pf)
+        df_path = '{}/{}.h5'.format(FLAGS.dataset_dir, FLAGS.dataset)
+        f = h5py.File(df_path, 'r')
+        ## Get the data
+        data = list(f['data'])
+        label = list(f['labels'])
+        train_datum = load_train_data(data,label)
+        train_datum.center_data()
         train_datum.shuffle(100)
         val_data, val_truth  = np.copy(train_datum.data), np.copy(train_datum.label)
 
@@ -144,7 +171,7 @@ def train():
         if train_datum.data.shape[0] > batch_num*FLAGS.batch_size:
             batch_num += 1
 
-        learning_rate = tf.train.inverse_time_decay(FLAGS.learning_rate, global_step, batch_num, 0.0001*batch_num, True)
+        learning_rate = tf.train.inverse_time_decay(learning_rate, global_step, batch_num, 0.0001*batch_num, True)
         var_list = tf.trainable_variables() 
 
         opt = tf.train.MomentumOptimizer(learning_rate = learning_rate, momentum = FLAGS.momentum)
@@ -173,8 +200,10 @@ def train():
         outdir = os.path.join(FLAGS.out_dir, FLAGS.dataset, timestampLaunch)
         if not os.path.exists(outdir):
             os.makedirs(outdir)
-
-
+        if FLAGS.dataset == 'umist':
+            max_periods = 2000
+        else:
+            max_periods = FLAGS.max_periods
         # load saver and restore session
         saver = tf.train.Saver(max_to_keep=3)
         if FLAGS.restore_previous_if_exists:
@@ -187,7 +216,7 @@ def train():
 
         """ start the training """ 
         print('start training the dataset of {}'.format(FLAGS.dataset))
-        for period in range(FLAGS.max_periods): 
+        for period in range(max_periods): 
             real_period = period + FLAGS.checkpoint_periods
 
             '''Forward steps'''
