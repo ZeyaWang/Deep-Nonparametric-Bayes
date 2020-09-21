@@ -130,7 +130,7 @@ def Gibbs_DPM_Gaussian_summary_input(SS, x, n_vec,
   iter_save=0
   #mat S(p,p); #mat M(p,p);
   Lambdan,kappan,nun=np.copy(Lambda0),kappa0,nu0
-  print("Gibbs starts\n")
+  print("SIGN starts\n")
   for iter in range(n_iter):
     #update cluster assignment
     #print('n_vec{}'.format(n_vec))
@@ -214,7 +214,7 @@ def Gibbs_DPM_Gaussian_summary_input(SS, x, n_vec,
     K[iter_save]=K_old
     iter_save += 1
   
-  print("Gibbs ends; start summarizing\n")
+  print("SIGN ends; start summarizing\n")
   #Summarize clustering: Dahl's LS algorithm
   co = CoClusterProb(member,effMCsize,n)
   minIndex=LScluster(member,effMCsize,n,co)

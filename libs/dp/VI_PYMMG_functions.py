@@ -200,7 +200,7 @@ def C_VI_PYMMG_CoC(xx,  SS, n_vec, max_it,  tol,  Kmax,  theta0, tau0,
   j = np.zeros(1)
   mtmp = np.zeros((p,p))
   e1, e2, e3 = np.zeros(Kmax), np.zeros(Kmax), np.zeros(Kmax) #tmp values for elbo
-  print("VB starts")
+  print("SIGN starts")
   flag=1
   elbo = np.zeros(max_it)
   for kk in range(Kmax):
