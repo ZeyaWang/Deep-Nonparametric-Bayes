@@ -91,7 +91,7 @@ def train():
         learning_rate = 0.001
         Detcoef = 50
     elif FLAGS.dataset == 'usps': 
-        img_height = img_width = 32      
+        img_height = img_width = 16     
         learning_rate = 0.0001  
         Detcoef = 50
     elif FLAGS.dataset == 'frgc': 
