@@ -89,23 +89,29 @@ def train():
     if FLAGS.dataset == 'mnist_test': 
         img_height = img_width = 28
         learning_rate = 0.001
+        Detcoef = 50
     elif FLAGS.dataset == 'usps': 
         img_height = img_width = 32      
         learning_rate = 0.0001  
+        Detcoef = 50
     elif FLAGS.dataset == 'frgc': 
         img_height = img_width = 32
-        learning_rate = 0.1    
+        learning_rate = 0.1 
+        Detcoef = 20   
     elif FLAGS.dataset == 'ytf': 
         img_height = img_width = 55
         learning_rate = 0.1
+        Detcoef = 20
     elif FLAGS.dataset == 'umist': 
         img_height = 112
         img_width = 92
         learning_rate = 0.0001
+        Detcoef = 20
     else:
         img_height = FLAGS.img_height
         img_width = FLAGS.img_width
         learning_rate = FLAGS.learning_rate
+        Detcoef = FLAGS.Detcoef
 
     tf.logging.set_verbosity(tf.logging.DEBUG)
     with tf.Graph().as_default():
@@ -148,7 +154,7 @@ def train():
         # l2 regularization
         penalty = tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES)
         # total loss
-        total_loss = cluster_loss + FLAGS.Detcoef*det_loss
+        total_loss = cluster_loss + Detcoef*det_loss
         if penalty:
             l2_penalty = tf.add_n(penalty)
             total_loss += l2_penalty
@@ -356,12 +362,12 @@ def train():
                     period_det_loss += dtlossv/batch_num
                     summary_writer.add_summary(merged_summary, real_step)
                     print('DP loss for back step {} is {}; det loss is{}, total loss is{}'.format(real_step, 
-                        dlossv, dtlossv, dlossv + FLAGS.Detcoef*dtlossv))
+                        dlossv, dtlossv, dlossv + Detcoef*dtlossv))
                 ## shuffle train data for next batch
                 train_datum.shuffle(period)
                 val_data, val_truth  = np.copy(train_datum.data), np.copy(train_datum.label)
                 ## record the period loss
-                period_tot_loss = period_cluster_loss + FLAGS.Detcoef*period_det_loss
+                period_tot_loss = period_cluster_loss + Detcoef*period_det_loss
                 period_det_l.append(period_det_loss)
                 period_cluster_l.append(period_cluster_loss)
                 period_tot_l.append(period_tot_loss)
