@@ -353,13 +353,12 @@ def train():
                     step_labels_onehot = train_labels_onehot[start:end]
                     cls_mu = np.matmul(step_labels_onehot, dp_mus) # NxK x KxD=> NxD
                     cls_Gamma = np.matmul(dp_Gammas, step_labels_onehot.T).T # DxDxK KxN => DxDxN => NxDxD
-                    _, dlossv, dtlossv, merged_summary = sess.run([train_opt,cluster_loss,det_loss,merged_summary_op], 
+                    _, dlossv, dtlossv= sess.run([train_opt,cluster_loss], 
                         feed_dict={imageip:train_x, cls_mus:cls_mu, cls_Gammas: cls_Gamma})
 
                     # save loss
                     period_cluster_loss += dlossv/batch_num
                     period_det_loss += dtlossv/batch_num
-                    summary_writer.add_summary(merged_summary, real_step)
                     #print('DP loss for back step {} is {}; det loss is{}, total loss is{}'.format(real_step, 
                     #    dlossv, dtlossv, dlossv + Detcoef*dtlossv))
                 ## shuffle train data for next batch
