@@ -71,7 +71,7 @@ class load_train_data:
             datum = self.data[self.next_index:(self.next_index + batch_size), :, :, :]    
             labels = self.label[self.next_index:(self.next_index + batch_size)]
             self.next_index += batch_size              
-        return datum, labels, plabels20, plabels50, plabels100, plabels160
+        return datum, labels
 
     def reset(self): # reset next index to zero
         self.next_index = 0
