@@ -353,7 +353,7 @@ def train():
                     step_labels_onehot = train_labels_onehot[start:end]
                     cls_mu = np.matmul(step_labels_onehot, dp_mus) # NxK x KxD=> NxD
                     cls_Gamma = np.matmul(dp_Gammas, step_labels_onehot.T).T # DxDxK KxN => DxDxN => NxDxD
-                    _, dlossv, dtlossv= sess.run([train_opt,cluster_loss], 
+                    _, dlossv, dtlossv= sess.run([train_opt, cluster_loss, det_loss], 
                         feed_dict={imageip:train_x, cls_mus:cls_mu, cls_Gammas: cls_Gamma})
 
                     # save loss
