@@ -332,7 +332,7 @@ def train():
                     conv_cluster_l.append(period_cluster_loss)
                     if conv_cluster_l[-1] < min(conv_cluster_l[:-1]):
                         best_nmi, best_period = nmi, real_period
-                        saver.save(sess, os.path.join(outdir, real_period)
+                        saver.save(sess, os.path.join(outdir, 'ckpt'), real_period)
                         # save truth and labels
                         np.savez(os.path.join(outdir,'labels_{}.npy'.format(real_period)),
                             val_labels=val_labels, val_truth=val_truth,
