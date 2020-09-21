@@ -348,7 +348,7 @@ def train():
                 period_cluster_loss, period_det_loss = 0., 0.
                 for step in range(batch_num-1):
                     real_step = step + real_period*batch_num                 
-                    train_x, train_y,_,_,_,_ = train_datum.nextBatch(FLAGS.batch_size)
+                    train_x, train_y = train_datum.nextBatch(FLAGS.batch_size)
                     start, end = step*FLAGS.batch_size, (step+1)*FLAGS.batch_size
                     step_labels_onehot = train_labels_onehot[start:end]
                     cls_mu = np.matmul(step_labels_onehot, dp_mus) # NxK x KxD=> NxD
