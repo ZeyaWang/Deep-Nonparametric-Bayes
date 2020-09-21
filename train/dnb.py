@@ -334,7 +334,7 @@ def train():
                         best_nmi, best_period = nmi, real_period
                         saver.save(sess, os.path.join(outdir, real_period)
                         # save truth and labels
-                        np.savez(os.path.join(outdir,'labels_{}.npy'.format(real_period)), 
+                        np.savez(os.path.join(outdir,'labels_{}.npy'.format(real_period)),
                             val_labels=val_labels, val_truth=val_truth,
                             val_mean=val_mean, val_std=val_std)
                         # save dpm model
