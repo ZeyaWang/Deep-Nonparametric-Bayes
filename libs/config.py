@@ -101,7 +101,7 @@ tf.app.flags.DEFINE_boolean(
     'restore_previous_if_exists', False,
     'if restoring a checkpoint')
 tf.app.flags.DEFINE_boolean(
-    'if_initialize_from_pretrain', True,
+    'if_initialize_from_pretrain', False,
     'if initialized from pretrained results.')
 
 ###################
