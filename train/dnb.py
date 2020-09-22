@@ -338,7 +338,7 @@ def train():
                             val_labels=val_labels, val_truth=val_truth,
                             val_mean=val_mean, val_std=val_std)
                         # save dpm model
-                        with open(os.path.join(outdir, 'model_{}'.format(real_period), 'wb')) as pf:
+                        with open(os.path.join(outdir, 'model_{}.pkl'.format(real_period)), 'wb') as pf:
                             pickle.dump(dpgmm, pf)
 
             if period < max_periods - 1:
