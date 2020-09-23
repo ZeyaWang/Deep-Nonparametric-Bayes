@@ -16,5 +16,5 @@ python3 train/dnb.py --dataset_dir=$DATASETPATH --dataset=usps
 ```
 
 ## License
-This code is released under the MIT License (refer to the LICENSE file for details).
+This code is released under the MIT License.
 
