@@ -90,28 +90,34 @@ def train():
         img_height = img_width = 28
         learning_rate = 0.001
         Detcoef = 50
+        apply_network = 'lenet'
     elif FLAGS.dataset == 'usps': 
         img_height = img_width = 16     
         learning_rate = 0.0001  
         Detcoef = 50
+        apply_network = 'lenet0'
     elif FLAGS.dataset == 'frgc': 
         img_height = img_width = 32
         learning_rate = 0.1 
         Detcoef = 20   
+        apply_network = 'lenet'
     elif FLAGS.dataset == 'ytf': 
         img_height = img_width = 55
         learning_rate = 0.1
         Detcoef = 20
+        apply_network = 'lenet'
     elif FLAGS.dataset == 'umist': 
         img_height = 112
         img_width = 92
         learning_rate = 0.0001
         Detcoef = 20
+        apply_network = 'dlenet'
     else:
         img_height = FLAGS.img_height
         img_width = FLAGS.img_width
         learning_rate = FLAGS.learning_rate
         Detcoef = FLAGS.Detcoef
+        apply_network = FLAGS.network
 
     tf.logging.set_verbosity(tf.logging.DEBUG)
     with tf.Graph().as_default():
@@ -122,7 +128,7 @@ def train():
             imageip = tf.placeholder(tf.float32, [None, img_height, img_width, 3])
 
         # get the embedding data from the network
-        _, end_points =network.get_network(FLAGS.network, imageip, FLAGS.max_k,
+        _, end_points =network.get_network(apply_network, imageip, FLAGS.max_k,
             weight_decay=FLAGS.weight_decay, is_training=True, reuse = False, spatial_squeeze=False)
         # fc3 is the name of our embedding layer
         end_net = end_points['fc3']
@@ -139,7 +145,7 @@ def train():
         det_loss =  -  logdet(cov_data)
 
         # get the numpy data for both purpose of clustering and evaluation
-        _, val_end_points =network.get_network(FLAGS.network, imageip, FLAGS.max_k,
+        _, val_end_points =network.get_network(apply_network, imageip, FLAGS.max_k,
             weight_decay=FLAGS.weight_decay, is_training=False, reuse = True, spatial_squeeze=False)
         val_end_data = val_end_points['fc3']
 
