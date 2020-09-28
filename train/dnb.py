@@ -329,7 +329,8 @@ def train():
                 train_labels_onehot = np.eye(FLAGS.max_k)[val_labels]
 
             nmi = normalized_mutual_info_score(val_labels, val_truth)  
-            print("NMI for period{} is {}".format(period,nmi))
+            if period > 0:
+                print("NMI for period{} is {}".format(period,nmi))
 
             if period >= 100:
                 ## check if the results need to be saved using det_loss and cluster_loss
