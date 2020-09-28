@@ -15,6 +15,11 @@ Run train/dnb.py with the corresponding arguments to implement the clustering al
 python3 train/dnb.py --dataset_dir=$DATASETPATH --dataset=usps
 ```
 
+If you choose to run with pretrained weights, you can modify the command like:
+
+```
+python3 train/dnb.py --dataset_dir=$DATASETPATH --dataset=usps --if_initialize_from_pretrain=True --checkpoint_path=train/pretrain/usps/initial
+```
 ## License
 This code is released under the MIT License.
 
