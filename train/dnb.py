@@ -180,8 +180,7 @@ def train():
 
         ## set up mini-batch steps and optimizer
         batch_num = train_datum.data.shape[0]//FLAGS.batch_size
-        if train_datum.data.shape[0] > batch_num*FLAGS.batch_size:
-            batch_num += 1
+
 
         learning_rate = tf.train.inverse_time_decay(learning_rate, global_step, batch_num, 0.0001*batch_num, True)
         var_list = tf.trainable_variables() 
@@ -353,7 +352,7 @@ def train():
                 # require: train_labels_onehot:NxK; dp_mus: KxD; dp_Gammas: DxDxK
                 train_datum.reset() # reset data from the original order to match predicted label
                 period_cluster_loss, period_det_loss = 0., 0.
-                for step in range(batch_num-1):
+                for step in range(batch_num):
                     real_step = step + real_period*batch_num                 
                     train_x, train_y = train_datum.nextBatch(FLAGS.batch_size)
                     start, end = step*FLAGS.batch_size, (step+1)*FLAGS.batch_size
